@@ -47,9 +47,11 @@
   <ItemGroup>
     <Compile Include="Complex.cs" />
     <Compile Include="FourierTransform.cs" />
+    <Compile Include="Image.cs" />
     <Compile Include="Imaging.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemTools.cs" />
     <Compile Include="Tools.cs" />
   </ItemGroup>
   <ItemGroup>

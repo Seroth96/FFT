@@ -226,7 +226,7 @@ namespace FFTc
         /// 
         /// <returns>Returns grayscale bitmap.</returns>
         /// 
-     /*   public Bitmap ToBitmap()
+        public Bitmap ToBitmap()
         {
             // create new image
             Bitmap dstImage = Image.CreateGrayscaleImage(width, height);
@@ -258,7 +258,7 @@ namespace FFTc
 
             return dstImage;
         }
-        */
+        
         /// <summary>
         /// Applies forward fast Fourier transformation to the complex image.
         /// </summary>
