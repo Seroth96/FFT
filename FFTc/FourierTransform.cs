@@ -19,7 +19,8 @@ namespace FFTc
     /// 
     public static class FourierTransform
     {
-        static Complex[,] d;
+        static ArrayList  d = new ArrayList();
+        static ArrayList indexes = new ArrayList();
         /// <summary>
         /// Fourier transformation direction.
         /// </summary>
@@ -311,7 +312,7 @@ namespace FFTc
         {
             int k = data.GetLength(0);
             int n = data.GetLength(1);
-            d = data;
+            
             // check data size
             if (
                 (!Tools.IsPowerOf2(k)) ||
@@ -329,9 +330,16 @@ namespace FFTc
             
             for (int i = 0; i < k; i++)
             {
-                
-                // transform it
-                Thread t = new Thread(() => pfft(data, direction, i));
+                Complex[] row = new Complex[n];
+                lock (data)
+                {
+                    // copy row
+                    for (int j = 0; j < n; j++)
+                    {
+                        row[j] = data[i, j];
+                    }
+                }                // transform it
+                Thread t = new Thread(() => pfft(row, direction, i));
                 t.Start();
                 threads.Add(t);
                 // copy back
@@ -340,15 +348,29 @@ namespace FFTc
             {
                 thread.Join();
             }
-
-            //data = d;
+           for(int i=0; i<indexes.Count-1; i++)
+            {
+                int x = (int)indexes[i];
+                Complex[] c = (Complex[])d[i];
+                for (int j = 0; j < n; j++)
+                {
+                    data[x, j] = c[j];
+                }
+            }
+            d.Clear();
+            indexes.Clear();
             // process columns
             List<Thread> threads2 = new List<Thread>();
             for (int j = 0; j < n; j++)
             {
-                
+
+                Complex[] col = new Complex[k];
+                // copy column
+
+                for (int i = 0; i < k; i++)
+                    col[i] = data[i, j];
                 // transform it
-                Thread t = new Thread(() => pfft2(data, direction, j));
+                Thread t = new Thread(() => pfft2(col, direction, j));
                 t.Start();
                 threads2.Add(t);
                 //FourierTransform.FFT(col, direction);
@@ -361,51 +383,40 @@ namespace FFTc
             {
                 thread.Join();
             }
+
+            for (int j = 0; j < indexes.Count-1; j++)
+            {
+                int x = (int)indexes[j];
+                Complex[] c = (Complex[])d[j];
+                for (int i = 0; i < k; i++)
+                    data[i, x] = c[i];
+            }
         }
 
-        public static void pfft(Complex[,] data, Direction direction, int i)
+        public static void pfft(Complex[] row, Direction direction, int i)
         {
-            int n = data.GetLength(1);
-            Complex[] row = new Complex[n];
-            lock (data)
-            {
-                // copy row
-                for (int j = 0; j < n; j++)
-                {
-                    row[j] = data[i, j];
-                }
-            }
+           
             //Console.WriteLine(tid);
             FourierTransform.FFT(row, direction);
-            lock (data)
-            { 
-               
-
-                for (int j = 0; j < n; j++)
+            lock (indexes)
+            {
+                lock (d)
                 {
-                    {
-                        data[i, j] = row[j];
-                    }
+                    indexes.Add(i);
+                    d.Add(row);
                 }
             }
         }
-        public static void pfft2(Complex[,] data, Direction direction, int j)
+        public static void pfft2(Complex[] col, Direction direction, int j)
         {
-            int k = data.GetLength(0);
-            Complex[] col = new Complex[k];
-            // copy column
-            lock (d)
-            {
-                for (int i = 0; i < k; i++)
-                    col[i] = data[i, j];
-            }
             FourierTransform.FFT(col, direction);
-            lock (d)
+            lock (indexes)
             {
-
-                for (int i = 0; i < k; i++)
-                    data[i, j] = col[i];
-
+                lock (d)
+                {
+                    indexes.Add(j);
+                    d.Add(col);
+                }
             }
         }
         #region Private Region

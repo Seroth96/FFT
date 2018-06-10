@@ -29,7 +29,7 @@ namespace FFTc
             }
             else if(args.Length == 1)
             {
-                Bitmap image = Image.FromFile(System.IO.Directory.GetCurrentDirectory() + args[0] + ".bmp");
+                Bitmap image = Image.FromFile(System.IO.Directory.GetCurrentDirectory()  + args[0] + ".bmp");
 
                 ComplexImage complexImage = ComplexImage.FromBitmap(image);
 
@@ -38,7 +38,7 @@ namespace FFTc
                 stopwatch.Stop();
                 Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
-                complexImage.ForwardFourierTransform();
+                
 
 
                 Bitmap fourierImage = complexImage.ToBitmap();
