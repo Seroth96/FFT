@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace FFTc
 {
     using System;
+    using System.Collections;
+    using System.Threading;
 
     /// <summary>
     /// Fourier transformation.
@@ -17,6 +19,7 @@ namespace FFTc
     /// 
     public static class FourierTransform
     {
+        static Complex[,] d;
         /// <summary>
         /// Fourier transformation direction.
         /// </summary>
@@ -259,7 +262,7 @@ namespace FFTc
         {
             int k = data.GetLength(0);
             int n = data.GetLength(1);
-
+            
             // check data size
             if (
                 (!Tools.IsPowerOf2(k)) ||
@@ -283,7 +286,9 @@ namespace FFTc
                 FourierTransform.FFT(row, direction);
                 // copy back
                 for (int j = 0; j < n; j++)
-                    data[i, j] = row[j];
+                {  
+                        data[i, j] = row[j];
+                }
             }
 
             // process columns
@@ -302,6 +307,107 @@ namespace FFTc
             }
         }
 
+        public static void FFT2P(Complex[,] data, Direction direction)
+        {
+            int k = data.GetLength(0);
+            int n = data.GetLength(1);
+            d = data;
+            // check data size
+            if (
+                (!Tools.IsPowerOf2(k)) ||
+                (!Tools.IsPowerOf2(n)) ||
+                (k < minLength) || (k > maxLength) ||
+                (n < minLength) || (n > maxLength)
+                )
+            {
+                throw new ArgumentException("Incorrect data length.");
+            }
+
+            // process rows
+            
+            List<Thread> threads = new List<Thread>();
+            
+            for (int i = 0; i < k; i++)
+            {
+                
+                // transform it
+                Thread t = new Thread(() => pfft(data, direction, i));
+                t.Start();
+                threads.Add(t);
+                // copy back
+            }
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+
+            //data = d;
+            // process columns
+            List<Thread> threads2 = new List<Thread>();
+            for (int j = 0; j < n; j++)
+            {
+                
+                // transform it
+                Thread t = new Thread(() => pfft2(data, direction, j));
+                t.Start();
+                threads2.Add(t);
+                //FourierTransform.FFT(col, direction);
+                // copy back
+               
+
+               
+            }
+            foreach (var thread in threads2)
+            {
+                thread.Join();
+            }
+        }
+
+        public static void pfft(Complex[,] data, Direction direction, int i)
+        {
+            int n = data.GetLength(1);
+            Complex[] row = new Complex[n];
+            lock (data)
+            {
+                // copy row
+                for (int j = 0; j < n; j++)
+                {
+                    row[j] = data[i, j];
+                }
+            }
+            //Console.WriteLine(tid);
+            FourierTransform.FFT(row, direction);
+            lock (data)
+            { 
+               
+
+                for (int j = 0; j < n; j++)
+                {
+                    {
+                        data[i, j] = row[j];
+                    }
+                }
+            }
+        }
+        public static void pfft2(Complex[,] data, Direction direction, int j)
+        {
+            int k = data.GetLength(0);
+            Complex[] col = new Complex[k];
+            // copy column
+            lock (d)
+            {
+                for (int i = 0; i < k; i++)
+                    col[i] = data[i, j];
+            }
+            FourierTransform.FFT(col, direction);
+            lock (d)
+            {
+
+                for (int i = 0; i < k; i++)
+                    data[i, j] = col[i];
+
+            }
+        }
         #region Private Region
 
         private const int minLength = 2;

@@ -14,7 +14,7 @@ namespace FFTc
     /// Complex image.
     /// </summary>
     /// 
-    /// <remarks><para>The class is used to keep image represented in complex numbers sutable for Fourier
+    /// <remarks><para>The class is used to keep image represented in complex numbers suitable for Fourier
     /// transformations.</para>
     /// 
     /// <para>Sample usage:</para>
@@ -279,7 +279,9 @@ namespace FFTc
                     }
                 }
 
+                //FourierTransform.FFT2P(data, FourierTransform.Direction.Forward);
                 FourierTransform.FFT2(data, FourierTransform.Direction.Forward);
+
                 fourierTransformed = true;
             }
         }
