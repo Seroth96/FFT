@@ -32,10 +32,15 @@ namespace FFTc
                 Bitmap image = Image.FromFile(System.IO.Directory.GetCurrentDirectory() + args[0] + ".bmp");
 
                 ComplexImage complexImage = ComplexImage.FromBitmap(image);
+
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 complexImage.ForwardFourierTransform();
                 stopwatch.Stop();
                 Console.WriteLine(stopwatch.ElapsedMilliseconds);
+
+                complexImage.ForwardFourierTransform();
+
+
                 Bitmap fourierImage = complexImage.ToBitmap();
                 Console.WriteLine(System.IO.Directory.GetCurrentDirectory() + args[0] + "fourier.bmp");
                 fourierImage.Save(System.IO.Directory.GetCurrentDirectory() + args[0] + "fourier.bmp");
