@@ -306,7 +306,7 @@ namespace FFTc
             }
         }
 
-        public static void FFT2P(Complex[,] data, Direction direction)
+        public static void FFT2P(Complex[,] data, Direction direction, int THREADS)
         {
             int k = data.GetLength(0);
             int n = data.GetLength(1);
@@ -322,28 +322,14 @@ namespace FFTc
                 throw new ArgumentException("Incorrect data length.");
             }
 
-            // process rows
-        
+            
             List<Thread> threads = new List<Thread>();
-            List< Complex[]> rows = new List<Complex[]>();
-
-            for (int i = 0; i < k; i++)
+            int quantity = k % THREADS;
+            for (int i = 0; i < k; i+= (k / THREADS) + (quantity-- > 0 ? 1 : 0))
             {
-                var row = new Complex[n];
-                
-                // copy row
-                for (int j = 0; j < n; j++)
-                {
-                    row[j] = data[i, j];
-                }
-                rows.Add(row);
-
-
-                // transform it
-                // Thread t = new Thread(() => pfft(row, direction, i));
-                
-                Thread t = new Thread(() => FFT(rows.Last(), direction));
-                
+                int end = i + (k / THREADS) + (quantity > 0 ? 1 : 0);
+                var start = i;
+                Thread t = new Thread(() => fftpr(ref data, direction, start, end, n));
                 t.Start();
                 threads.Add(t);
             }
@@ -352,32 +338,16 @@ namespace FFTc
                 thread.Join();
             }
 
-            //copy back results
-            foreach (var row in rows)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    data[rows.IndexOf(row), j] = row[j];
-                }
-            }
             threads.Clear();
             // process columns
 
+            int quantityCol = n % THREADS;            
 
-            List<Complex[]> cols = new List<Complex[]>();
-            for (int j = 0; j < n; j++)
+            for (int i = 0; i < n; i += (n / THREADS) + (quantityCol-- > 0 ? 1 : 0))
             {
-
-                Complex[] col = new Complex[k];
-                // copy column
-
-                for (int i = 0; i < k; i++)
-                    col[j] = data[i, j];
-
-                cols.Add(col);
-              
-                // transform it
-                Thread t = new Thread(() => FFT(cols.Last(), direction));
+                int end = i + (n / THREADS) + (quantityCol > 0 ? 1 : 0);
+                var start = i;
+                Thread t = new Thread(() => fftpc(ref data, direction, start, end, k));
                 t.Start();
                 threads.Add(t);
             }
@@ -386,17 +356,52 @@ namespace FFTc
             {
                 thread.Join();
             }
-            //copy back results
-            foreach (var col in cols)
+        }
+
+        private static void fftpr(ref Complex[,] data, Direction direction, int start, int end, int cols)
+        {
+            Complex[] row = new Complex[cols];
+
+            for (int i = start; i < end; i++)
             {
-                for (int i = 0; i < k; i++)
+                // copy row
+                for (int j = 0; j < cols; j++)
+                    row[j] = data[i, j];
+                // transform it
+                FourierTransform.FFT(row, direction);
+                // copy back
+                for (int j = 0; j < cols; j++)
                 {
-                    data[i, cols.IndexOf(col)] = col[i];
+                    lock(data)
+                    {
+                        data[i, j] = row[j];
+                    }
+                }
+            }
+        }
+        private static void fftpc(ref Complex[,] data, Direction direction, int start, int end, int rows )
+        {
+            Complex[] col = new Complex[rows];
+
+            for (int j = start; j < end; j++)
+            {
+                // copy column
+                for (int i = 0; i < rows; i++)
+                    col[i] = data[i, j];
+                // transform it
+                FourierTransform.FFT(col, direction);
+                // copy back
+                for (int i = 0; i < rows; i++)
+                {
+                    lock (data)
+                    {
+                        data[i, j] = col[i];
+                    }
                 }
             }
         }
 
-        
+
         #region Private Region
 
         private const int minLength = 2;

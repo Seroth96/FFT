@@ -20,7 +20,7 @@ namespace FFTc
                     {
                         UseShellExecute = false, // change value to false
                         FileName = "FFTc.exe",
-                        Arguments = "\\img\\" + picture 
+                        Arguments = picture 
                     };
 
 
@@ -35,7 +35,7 @@ namespace FFTc
                 ComplexImage complexImage = ComplexImage.FromBitmap(image);
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                complexImage.ForwardFourierTransform();
+                complexImage.ForwardFourierTransform(7);
                 stopwatch.Stop();
                 Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
@@ -49,7 +49,7 @@ namespace FFTc
 
                 Stopwatch stopwatch2 = Stopwatch.StartNew();
                 // ComplexImage backward = ComplexImage.FromBitmap(fourierImage);
-                complexImage.BackwardFourierTransform();
+                complexImage.BackwardFourierTransform(7);
                 stopwatch2.Stop();
                 Console.WriteLine(stopwatch2.ElapsedMilliseconds);
 
