@@ -30,7 +30,7 @@ namespace FFTc
             }
             else if(args.Length == 1)
             {
-                Bitmap image = Image.FromFile(System.IO.Directory.GetCurrentDirectory()  + args[0] + ".bmp");
+                Bitmap image = Image.FromFile(System.IO.Directory.GetCurrentDirectory() +"\\img\\" + args[0] + ".bmp");
 
                 ComplexImage complexImage = ComplexImage.FromBitmap(image);
 
@@ -43,16 +43,19 @@ namespace FFTc
 
 
                 Bitmap fourierImage = complexImage.ToBitmap();
-                Console.WriteLine(System.IO.Directory.GetCurrentDirectory() + args[0] + "fourier.bmp");
-                fourierImage.Save(System.IO.Directory.GetCurrentDirectory() + args[0] + "fourier.bmp");
+              //  Console.WriteLine(System.IO.Directory.GetCurrentDirectory() + "\\img\\"+ args[0] + "fourier.bmp");
+                fourierImage.Save(System.IO.Directory.GetCurrentDirectory() + "\\img\\"+ args[0] + "fourier.bmp");
 
 
+                Stopwatch stopwatch2 = Stopwatch.StartNew();
                 // ComplexImage backward = ComplexImage.FromBitmap(fourierImage);
                 complexImage.BackwardFourierTransform();
+                stopwatch2.Stop();
+                Console.WriteLine(stopwatch2.ElapsedMilliseconds);
 
                 Bitmap backwardFourier = complexImage.ToBitmap();
 
-                backwardFourier.Save(System.IO.Directory.GetCurrentDirectory() + args[0] +"backwardFourier.bmp");
+                backwardFourier.Save(System.IO.Directory.GetCurrentDirectory() + "\\img\\"+ args[0] +"backwardFourier.bmp");
 
             }
 

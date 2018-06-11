@@ -263,7 +263,7 @@ namespace FFTc
         /// Applies forward fast Fourier transformation to the complex image.
         /// </summary>
         /// 
-        public void ForwardFourierTransform()
+        public void ForwardFourierTransform(int threads = 1)
         {
             if (!fourierTransformed)
             {
@@ -278,10 +278,23 @@ namespace FFTc
                         }
                     }
                 }
+                if (threads == 1)
+                {
+                    FourierTransform.FFT2(data, FourierTransform.Direction.Forward);
+                }
+                else
+                {
+                    for (int i = 0; i < threads; i++)
+                    {
+                        Complex[,] tmp = new Complex[data.Length / threads,data.Length];
+                        data.CopyTo(tmp, (data.Length / threads) * i);
 
+                        FourierTransform.FFT2(data, FourierTransform.Direction.Forward);
+                    }
+                }
                 //FourierTransform.FFT2P(data, FourierTransform.Direction.Forward);
-                FourierTransform.FFT2(data, FourierTransform.Direction.Forward);
-
+               
+                
                 fourierTransformed = true;
             }
         }
@@ -290,11 +303,20 @@ namespace FFTc
         /// Applies backward fast Fourier transformation to the complex image.
         /// </summary>
         /// 
-        public void BackwardFourierTransform()
+        public void BackwardFourierTransform(int threads = 1)
         {
             if (fourierTransformed)
             {
-                FourierTransform.FFT2(data, FourierTransform.Direction.Backward);
+                if (threads == 1)
+                {
+                    FourierTransform.FFT2(data, FourierTransform.Direction.Backward);
+                }
+                else
+                {
+
+                }
+
+
                 fourierTransformed = false;
 
                 for (int y = 0; y < height; y++)
