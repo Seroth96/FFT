@@ -23,6 +23,7 @@ namespace FFTc
                         Arguments = "\\img\\" + picture 
                     };
 
+
                     Console.WriteLine("Starting process for " + "\\img\\" + picture + ".bmp");
                     Process.Start(processInfo);                   
                 }
