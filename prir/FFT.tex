@@ -1,0 +1,44 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[12pt, a4paper]{article}
+
+% Packages
+\input{settings/packages}
+
+% Page settings
+\input{settings/page}
+
+% Macros settings
+\input{settings/macros}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\let\cleardoublepage=\clearpage
+
+\begin{document}
+
+% Titlepage
+\input{content/FFT_Titlepage}
+
+% Table of content
+\tableofcontents
+\clearpage
+
+% Styling chapter pages
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[OC]{\leftmark}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\fancyhead[EC]{\rightmark}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{1pt}
+\cfoot{\thepage}
+
+% Chapters
+\input{content/FFT_Chapter1}
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
