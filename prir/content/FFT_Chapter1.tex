@@ -7,4 +7,10 @@ Celem projektu jest demonstracja możliwości zrównoleglenia obliczeń Szybkiej
 \section{Szczegóły instalacji i uruchomienia programu}
 \section{Uzyskane rezultaty}
 \section{Wnioski}
+\begin{itemize}
+	\item Po zastosowaniu transformaty w obie strony na obrazku zauważalny jest drobny spadek jakości obrazu.
+	\item Zrównoleglenie na procesy poszeczególnych grafik dało bardzo dobre rezultaty i zdecydowanie przyśpieszyło działanie programu przy większej ilości obrazków.
+	\item Wersja sekwencyjna jest równie szybka a czasami szybsza dla 2 lub 3 obrazków, ale od 4 i więcej zauważalna jest tendencja przyrostowa czasu wykonywania transformaty. W przeciwieństwie do zrównoleglonej wersji, gdzie czas utrzymuje się mniej więcej na tym samym poziomie.
+	\item Użycie zbyt dużej ilości wątków wbrew pozorom daje gorsze rezultaty niż ich mniejsza ilość, np. 8 czy 4. Jest to spowodowane, że program traci czas na uruchomienie poszczególnych wątków, a one same w sobie nie mają dużego obciążenia obliczeniowego
+\end{itemize}
 

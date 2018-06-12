@@ -56,7 +56,7 @@ namespace FFTc
                 }
 
                 stopwatch.Stop();
-                Console.WriteLine(stopwatch.ElapsedMilliseconds);
+                Console.WriteLine("Sekwencyjne wykonywanie programu trwało: " + stopwatch.ElapsedMilliseconds + " milisekund.\n ");
             }
             else if(args.Length == 1)
             {
@@ -65,7 +65,7 @@ namespace FFTc
                 ComplexImage complexImage = ComplexImage.FromBitmap(image);
 
              //   Stopwatch stopwatch = Stopwatch.StartNew();
-                complexImage.ForwardFourierTransform(7);
+                complexImage.ForwardFourierTransform(8);
                // stopwatch.Stop();
               //  Console.WriteLine(stopwatch.ElapsedMilliseconds);
 
@@ -75,14 +75,14 @@ namespace FFTc
 
              //   Stopwatch stopwatch2 = Stopwatch.StartNew();
                 // ComplexImage backward = ComplexImage.FromBitmap(fourierImage);
-                complexImage.BackwardFourierTransform(7);
+                complexImage.BackwardFourierTransform(8);
             //    stopwatch2.Stop();
             //    Console.WriteLine(stopwatch2.ElapsedMilliseconds);
 
                 Bitmap backwardFourier = complexImage.ToBitmap();
 
                 backwardFourier.Save(System.IO.Directory.GetCurrentDirectory() + "\\img\\" + args[0] + "backwardFourier.bmp");
-                Console.WriteLine(DateTime.Now.TimeOfDay);
+                Console.WriteLine("Proces dla obrazka " + args[0] + " zakończył się o: " + DateTime.Now.TimeOfDay);
             }
             Console.ReadLine();
 
