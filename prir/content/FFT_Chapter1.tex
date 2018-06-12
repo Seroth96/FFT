@@ -99,7 +99,21 @@ Należało zadbać o synchroniczny dostęp do tablicy $data$ podczas zapisu wyni
 	\centering
 	\caption{Dla 2 obrazków 512x512 pikseli - wersja zrównoleglona 8 wątków}
 \end{figure}
+\begin{figure}[ht]
+	\centering
+	%\caption{Podsumowanie}
 
+	\begin{tabular}{@{}llllll@{}}
+		\toprule
+		Liczba obrazów & Liczba wątków & czas równolegle & czas sekwencyjnie & Przysp. w s & Przysp. \\ \midrule
+		2              & 8             & 260             & 386               & 0,186              & 148\%          \\
+		4              & 8             & 523             & 662               & 0,139              & 126\%          \\
+		13             & 4             & 1527            & 2894              & 1,367              & 189\%          \\
+		13             & 8             & 1766            & 2894              & 1,128              & 164\%          \\
+		13             & 16            & 1895            & 2894              & 0,999              & 153\%          \\ \bottomrule
+	\end{tabular}
+
+\end{figure}
 \clearpage\newpage
 \section{Wnioski}
 \begin{itemize}
