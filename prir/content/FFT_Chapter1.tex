@@ -9,7 +9,35 @@ transformacji, a następnie zapisywaniu plików wyjściowych. Program dokonuje t
  Pełna lista bibliotek:\\
  
 \includegraphics[scale=1]{figures/bibl.png}
+
 \subsection{Wprowadzenie do tematyki FFT}
+
+\paragraph{Teoria} Dyskretną transformatę Fouriera (DFT) opisuje się wzorem:\\
+
+\Large $X_{k} = \sum_{n=0}^{N-1} x_{n}e^{-2\Pi i/N * nk}$, gdzie $ k = 0,1, ..., N -1$\\
+\newpage
+Złożoność obliczeniowa Szybkiej transformacji Fouriera wynosi O($N\log _{2}N$), zamiast  O($N^{2}$)  algorytmu wynikającego wprost ze wzoru określającego dyskretną transformatę Fouriera. \\
+
+Najpopularniejszą wersją FFT jest FFT o podstawie 2. Jest to bardzo efektywna operacja, jednak wektor próbek wejściowych (spróbkowany sygnał) musi mieć długość $ N=2^{k}$, $ N=2^{k}$ gdzie $ k$  to pewna liczba naturalna.  
+
+Dla obrazów (w 2D) zysk można określić jako obniżenie złożoności z  O($N^{4}$) na  O($N^{2}$).\\
+
+Dwuwymiarową transformację Fouriera można wyznaczyć obliczając transformacje jednowymiarowe, tj. przez wykonanie transformacji wierszy a następnie kolumn obrazu:\\
+
+\includegraphics[scale=0.5]{figures/t2.png}
+\newpage
+\paragraph{Przykład} 
+Przykładowe działanie dla obrazka z mostem:\\
+
+\includegraphics[scale=0.4]{figures/bridge.png}\\
+
+Obraz po transformacie:\\
+
+\includegraphics[scale=0.4]{figures/bridge1.png}\\
+
+Obraz po transformacie odwrotnej:\\
+
+\includegraphics[scale=0.4]{figures/bridge2.png}\\
 
 \paragraph{Zastosowania} Zastosowania transformacji obrazów to m. in.:
 \begin{itemize}
@@ -36,7 +64,7 @@ Aby uruchomić program należy:
 
 Zrównoleglenie przeprowadziliśmy poprze wprowadzenie wieloprocesowości oraz wielowątkowości.
 \paragraph{Wieloprocesowość} Wprowadziliśmy możliwość uruchamiania przetwarzania każdego wczytywanego obrazu z linii poleceń na osobnym procesie.\\
-	\includegraphics[scale=1]{figures/Par13Wat4.png}
+	\includegraphics[scale=0.8]{figures/Par13Wat4.png}
 \paragraph{Wielowątkowość} Podczas obliczeń FFT 2D należy wykonać transformatę najpierw na wierszach a następnie na kolumnach. Wykorzystaliśmy to, aby w zależności od ilości wątków definiowanych przez $THREADS$ przydzielać poszczególnym wątkom odpowiednią ilość wierszy, czy kolumn.\\
 Należało zadbać o synchroniczny dostęp do tablicy $data$ podczas zapisu wyników częściowych.\\
 \begin{lstlisting}
