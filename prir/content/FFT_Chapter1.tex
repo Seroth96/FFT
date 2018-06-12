@@ -2,6 +2,10 @@
 Celem projektu jest demonstracja możliwości zrównoleglenia obliczeń Szybkiej Transformaty Fouriera (FFT), na przykładzie przetwarzania obrazów.
 \section{Wstęp}
 \subsection{Technologia i zakres projektu}
+\paragraph{Sposób działania programu}
+Działanie programu polega na wczytywaniu obrazów w formacie BMP, poddawaniu ich
+transformacji, a następnie zapisywaniu plików wyjściowych. Program dokonuje także transformacji odwrotnej. Możliwe jest zrównoleglenie poprzez uruchomienie kilku procesów (jeden proces na przetwarzanie jednego obrazu wejściowego) oraz skorzystanie z przetwarzania wielowątkowego. Działanie programu przetestowaliśmy na kilkunastu obrazach testowych o rozmiarach od $ 64x64 $ do $ 1024x1024 $.
+\paragraph{Technologia i wykorzystane biblioteki}Program został napisany w C\#, wykorzystujemy biblioteki $ System.Diagnostics $ oraz $ System.Threading $.
 \subsection{Wprowadzenie do tematyki FFT}
 \section{Opis rozwiązania}
 \section{Szczegóły instalacji i uruchomienia programu}
