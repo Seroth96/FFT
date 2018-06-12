@@ -19,11 +19,21 @@ transformacji, a następnie zapisywaniu plików wyjściowych. Program dokonuje t
 	np. zakłóceń okresowych.
 \end{itemize}
 \subsection{Szczegóły instalacji i uruchomienia programu} 
-Aby uruchomić program wystarczy mieć możliwość wykonania pliku $exe$. \\
-Przykład uruchomienia:\\
+Po otrzymaniu pliku wykonywalnego \textbf{.exe} należy umieścić go w folderze, w którym znajduje się folder \textbf{img} a w nim obrazy, na których chcemy wykonać FFT. Obrazki muszą być w formacie \textbf{.bmp} oraz w zapisie 8bpp. 
 
-\textit{\Large{FFT.exe filname.bmp filename2.bmp filename3.bmp}}
+Aby uruchomić program należy:
+\begin{enumerate}
+	\item Otworzyć \textbf{Wiersz poleceń (cmd)}
+	\item Przejść do folderu z plikiem \textbf{.exe}
+	\item Umieścić obrazy w folderze \textbf{img}, jeśli go nie ma należy taki utworzyć
+	\item Uruchomić program z konsoli poleceniem:\\
+	\textbf{\textit{FFT.exe [nazwa\_obrazka1] [nazwa\_obrazka1] [nazwa\_obrazka2] [nazwa\_obrazka3] [nazwa\_obrazka4]}}
+	\subitem [nazwa\_obrazka] - to jest nazwa naszego obrazu bez rozszerzenia \textbf{.bmp}
+	\subitem FFT.exe - zależy od tego czy zmieniliśmy nazwę pliku wykonywalnego, podana nazwa jest domyślna
+	\item Dla każdego podane obrazka utworzył się w folderze \textbf{img} obrazek po FFT oraz po odwróconej FFT. (do nazw dodane przyrostki \textit{fourier} albo \textit{backwardfourier})
+\end{enumerate} 
 \section{Opis rozwiązania}
+
 Zrównoleglenie przeprowadziliśmy poprze wprowadzenie wieloprocesowości oraz wielowątkowości.
 \paragraph{Wieloprocesowość} Wprowadziliśmy możliwość uruchamiania przetwarzania każdego wczytywanego obrazu z linii poleceń na osobnym procesie.\\
 	\includegraphics[scale=1]{figures/Par13Wat4.png}
@@ -42,7 +52,55 @@ Należało zadbać o synchroniczny dostęp do tablicy $data$ podczas zapisu wyni
 	}
 \end{lstlisting}
  
+\clearpage\newpage
+
+\clearpage\newpage
+
 \section{Uzyskane rezultaty}
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{figures/Seq13.png}
+	\centering
+	\caption{Dla 13 obrazków 512x512 pikseli - wersja sekwencyjna}
+\end{figure}
+\begin{figure}[ht]
+	\includegraphics[width=0.8\textwidth]{figures/Par13Wat4.png}
+	\centering
+	\caption{Dla 13 obrazków 512x512 pikseli - wersja zrównoleglona 4 wątki}
+\end{figure}
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{figures/Par13Wat8.png}
+	\centering
+	\caption{Dla 13 obrazków 512x512 pikseli - wersja zrównoleglona 8 wątków}
+\end{figure}
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{figures/Par13Wat16.png}
+	\centering
+	\caption{Dla 13 obrazków 512x512 pikseli - wersja zrównoleglona 16 wątków}
+\end{figure}
+
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{figures/Seq4.png}
+	\centering
+	\caption{Dla 4 obrazków 512x512 pikseli - wersja sekwencyjna}
+\end{figure}
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{figures/Par4Wat8.png}
+	\centering
+	\caption{Dla 4 obrazków 512x512 pikseli - wersja zrównoleglona 8 wątków}
+\end{figure}
+
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{figures/Seq2.png}
+	\centering
+	\caption{Dla 2 obrazków 512x512 pikseli - wersja sekwencyjna}
+\end{figure}
+\begin{figure}[ht]
+	\includegraphics[width=\textwidth]{figures/Par2Wat8.png}
+	\centering
+	\caption{Dla 2 obrazków 512x512 pikseli - wersja zrównoleglona 8 wątków}
+\end{figure}
+
+\clearpage\newpage
 \section{Wnioski}
 \begin{itemize}
 	\item Po zastosowaniu transformaty w obie strony na obrazku zauważalny jest drobny spadek jakości obrazu.
