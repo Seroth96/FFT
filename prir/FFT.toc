@@ -1,9 +1,9 @@
-\select@language {polish}
+\babel@toc {polish}{}
 \contentsline {section}{\numberline {1}Cel Projektu}{2}{section.1}
 \contentsline {section}{\numberline {2}Wst\IeC {\k e}p}{2}{section.2}
 \contentsline {subsection}{\numberline {2.1}Technologia i zakres projektu}{2}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Wprowadzenie do tematyki FFT}{2}{subsection.2.2}
 \contentsline {section}{\numberline {3}Opis rozwi\IeC {\k a}zania}{2}{section.3}
 \contentsline {section}{\numberline {4}Szczeg\IeC {\'o}\IeC {\l }y instalacji i uruchomienia programu}{2}{section.4}
-\contentsline {section}{\numberline {5}Uzyskane rezultaty}{2}{section.5}
-\contentsline {section}{\numberline {6}Wnioski}{2}{section.6}
+\contentsline {section}{\numberline {5}Uzyskane rezultaty}{3}{section.5}
+\contentsline {section}{\numberline {6}Wnioski}{7}{section.6}
