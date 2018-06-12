@@ -279,8 +279,15 @@ namespace FFTc
                     }
                 }
 
-                FourierTransform.FFT2P(data, FourierTransform.Direction.Forward, THREADS);
-               // FourierTransform.FFT2(data, FourierTransform.Direction.Forward);
+                if ( THREADS == 1)
+                {
+                    FourierTransform.FFT2(data, FourierTransform.Direction.Forward);
+                }
+                else
+                {
+                    FourierTransform.FFT2P(data, FourierTransform.Direction.Forward, THREADS);
+                }
+               
                 fourierTransformed = true;
             }
         }
@@ -293,8 +300,15 @@ namespace FFTc
         {
             if (fourierTransformed)
             {
-               // FourierTransform.FFT2P(data, FourierTransform.Direction.Backward, THREADS);
-                FourierTransform.FFT2(data, FourierTransform.Direction.Backward);
+                // FourierTransform.FFT2P(data, FourierTransform.Direction.Backward, THREADS);
+                if (THREADS == 1)
+                {
+                    FourierTransform.FFT2(data, FourierTransform.Direction.Backward);
+                }
+                else
+                {
+                    FourierTransform.FFT2P(data, FourierTransform.Direction.Backward, THREADS);
+                }
                 fourierTransformed = false;
 
                 for (int y = 0; y < height; y++)
